@@ -71,9 +71,9 @@ class BrowserToolbarBottomBehavior(
     ) {
         if (shouldSnapAfterScroll || type == ViewCompat.TYPE_NON_TOUCH) {
             if (child.translationY >= (child.height / 2f)) {
-                animateSnap(child, SnapDirection.DOWN)
+                animateSnap(coordinatorLayout, child, SnapDirection.DOWN)
             } else {
-                animateSnap(child, SnapDirection.UP)
+                animateSnap(coordinatorLayout, child, SnapDirection.UP)
             }
         }
     }
@@ -100,8 +100,15 @@ class BrowserToolbarBottomBehavior(
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun animateSnap(child: View, direction: SnapDirection) = with(snapAnimator) {
-        addUpdateListener { child.translationY = it.animatedValue as Float }
+    internal fun animateSnap(
+        coordinatorLayout: CoordinatorLayout,
+        child: View,
+        direction: SnapDirection
+    ) = with(snapAnimator) {
+        addUpdateListener {
+            child.translationY = it.animatedValue as Float
+            coordinatorLayout.dispatchDependentViewsChanged(child)
+        }
         setFloatValues(child.translationY, if (direction == SnapDirection.UP) 0f else child.height.toFloat())
         start()
     }
