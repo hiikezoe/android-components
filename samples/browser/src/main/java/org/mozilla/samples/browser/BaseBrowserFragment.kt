@@ -123,8 +123,6 @@ abstract class BaseBrowserFragment : Fragment(), BackHandler {
             view = layout
         )
 
-        val scrollFeature = CoordinateScrollingFeature(components.sessionManager, layout.engineView, layout.toolbar)
-
         val contextMenuFeature = ContextMenuFeature(
             fragmentManager = requireFragmentManager(),
             store = components.store,
@@ -174,7 +172,6 @@ abstract class BaseBrowserFragment : Fragment(), BackHandler {
 
         // Observe the lifecycle for supported features
         lifecycle.addObservers(
-            scrollFeature,
             contextMenuFeature,
             menuUpdaterFeature,
             secureWindowFeature
@@ -191,6 +188,8 @@ abstract class BaseBrowserFragment : Fragment(), BackHandler {
             owner = this,
             view = layout
         )
+
+        layout.engineView.setDynamicToolbarMaxHeight(layout.toolbar.getLayoutParams().height)
 
         return layout
     }
