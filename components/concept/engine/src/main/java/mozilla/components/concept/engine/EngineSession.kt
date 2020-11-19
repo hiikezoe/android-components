@@ -81,6 +81,8 @@ abstract class EngineSession(
          */
         fun onRepostPromptCancelled() = Unit
 
+        fun onBeforeUnloadPromptDenied() = Unit
+
         /**
          * The engine received a request to open or close a window.
          *
